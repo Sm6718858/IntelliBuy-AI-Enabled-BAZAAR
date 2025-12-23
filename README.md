@@ -109,3 +109,8 @@ mail - sm6718858@gmail.com
 
 🙌 Contribution & Feedback
 Feel free to fork the repo, raise PRs, or submit issues. Feedback and stars ⭐ are always appreciated!
+
+License
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+
+⚠️ Any reuse, modification, or submission of this code requires the derived work to also be open-sourced under the same license.
