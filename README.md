@@ -1,6 +1,4 @@
-# 🛍️ IntelliBuy - AI-Based E-Commerce Platform
-
-**Live Preview:** [IntelliBuy Live](https://intelli-buy-ai-based-ecommerce-5ig4.vercel.app/)  
+# 🛍️ IntelliBuy - AI-Driven Commerce Intelligence Platform => NextGen बाज़ार
 
 ---
 
