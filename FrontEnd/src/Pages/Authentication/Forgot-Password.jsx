@@ -36,7 +36,7 @@ const Forgot_Password = () => {
     return (
         <div className="min-h-screen bg-gradient-to-tr from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center px-4">
             <Toaster position="top-center" />
-            <div className="w-full max-w-md bg-white shadow-2xl rounded-2xl p-6">
+            <div className="w-full max-w-md bg-green-100 shadow-2xl rounded-2xl p-6">
                 <h2 className="text-3xl font-bold text-center text-[#242D47] mb-6">Reset Password</h2>
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <input
