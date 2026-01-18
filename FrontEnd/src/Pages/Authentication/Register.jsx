@@ -37,12 +37,12 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center px-4 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-tr from-blue-100 via-purple-100 to-blue-200 flex items-center justify-center px-4 overflow-hidden">
 
       <Toaster position="top-center" />
       <div className="inside bg">
         <div className="wrapper">
-          <div className="w-full max-w-md bg-pink-100 shadow-2xl rounded-2xl p-8 animate-fade-in-down">
+          <div className="w-full max-w-md bg-green-100 shadow-2xl rounded-2xl p-8 animate-fade-in-down">
             <h1 className="text-3xl font-bold text-center text-[#242D47] mb-6">Register 📝</h1>
 
             <form className="space-y-5" onSubmit={handleSubmit}>

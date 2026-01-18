@@ -103,32 +103,31 @@ const ProductDetails = () => {
   return (
     <div className="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen overflow-x-hidden">
       <main className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="flex items-center text-sm text-gray-600 mb-6 font-bold">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center w-[60px] mt-2 bg-pink-500 text-white font-bold hover:bg-pink-600 mr-2 rounded-2xl px-3 py-1 transition"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            Back
-          </button>
-        </div>
+        <div className="flex items-center mb-6">
+  <button
+    onClick={() => navigate(-1)}
+    className="p-2 rounded-full hover:bg-gray-200 transition"
+    aria-label="Go back"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-5 w-5 text-gray-700"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+      />
+    </svg>
+  </button>
+</div>
 
-        {/* Product Details */}
+
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          {/* Image */}
           <div className="bg-white rounded-2xl shadow-md overflow-hidden mt-2 transition-all duration-300 hover:shadow-xl">
             <div className="p-3 sm:p-5 flex justify-center items-center bg-white rounded-md">
               <img
@@ -202,7 +201,9 @@ const ProductDetails = () => {
 
             <div className="mt-auto space-y-3 flex">
               <button
-                style={{ borderRadius: "20px" }}
+              style={{
+                  borderBottomLeftRadius: "15px",
+                }}
                 className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-2 px-4 shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center"
                 onClick={() => {
                   setCart([...cart, product]);
@@ -226,7 +227,10 @@ const ProductDetails = () => {
                 Add to Cart
               </button>
               <button
-                style={{ borderRadius: "20px" }}
+                style={{
+                  borderBottomRightRadius: "15px",
+                }}
+
                 className="w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center"
                 onClick={() => {
                   setCart([...cart, product]);
@@ -254,10 +258,9 @@ const ProductDetails = () => {
         </section>
 
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          {/* Write Review */}
           <div
-            className="bg-white mt-4 rounded-xl shadow-lg p-6 border-t-4 border-l-4 border-r-4 
-            border-t-pink-500 border-l-blue-700 border-r-blue-700 flex flex-col"
+            className="bg-white mt-4 rounded-xl shadow-lg p-6 
+             flex flex-col"
             style={{
               minHeight: "350px",
               height: "auto",
@@ -269,7 +272,6 @@ const ProductDetails = () => {
               Write a Review
             </h3>
 
-            {/* Rating */}
             <div className="mb-6 mx-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Your Rating
@@ -291,7 +293,6 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            {/* Review Text */}
             <div className="mb-6 mx-4 flex-grow">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Your Review
@@ -313,11 +314,10 @@ const ProductDetails = () => {
 
             <button
               className={`w-full py-3 px-4 font-semibold text-white transition-all duration-300 
-                  ${
-                    submittingReview
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg"
-                  }`}
+                  ${submittingReview
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg"
+                }`}
               onClick={submitReview}
               disabled={submittingReview}
             >
@@ -325,10 +325,8 @@ const ProductDetails = () => {
             </button>
           </div>
 
-          {/* Customer Reviews */}
           <div
-            className="bg-white mt-4 rounded-xl shadow-lg p-6 border-t-4 border-b-4 border-l-4 border-r-4 
-            border-t-pink-500 border-b-pink-500 border-l-blue-700 border-r-blue-700"
+            className="bg-white mt-4 rounded-xl shadow-lg p-6"
             style={{ height: "350px" }}
           >
             <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center px-3">
@@ -396,8 +394,7 @@ const ProductDetails = () => {
           </div>
         </section>
 
-        {/* Similar Products */}
-        <section className="mb-16">
+        <section className="mb-16 mt-4">
           <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"

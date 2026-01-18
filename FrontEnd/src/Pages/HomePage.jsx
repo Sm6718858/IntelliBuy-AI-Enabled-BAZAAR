@@ -39,7 +39,6 @@ const HomePage = () => {
     }
   };
 
-  // Fetch product count
   const getTotal = async () => {
     try {
       const { data } = await axios.get(
@@ -51,7 +50,6 @@ const HomePage = () => {
     }
   };
 
-  // Fetch paginated products
   const getAllProducts = async () => {
     try {
       setLoading(true);
@@ -66,7 +64,6 @@ const HomePage = () => {
     }
   };
 
-  // Load more products
   const loadMore = async () => {
     try {
       setLoading(true);
@@ -81,14 +78,12 @@ const HomePage = () => {
     }
   };
 
-  // Handle filter
   const handleFilter = (value, id) => {
     let all = [...checked];
     value ? all.push(id) : (all = all.filter((c) => c !== id));
     setChecked(all);
   };
 
-  // Apply filters
   const filterProduct = async () => {
     try {
       const { data } = await axios.post(
@@ -101,7 +96,6 @@ const HomePage = () => {
     }
   };
 
-  // Reset products and filters
   const resetFilters = () => {
     setChecked([]);
     setRadio([]);
@@ -110,19 +104,16 @@ const HomePage = () => {
     setMobileFilterOpen(false);
   };
 
-  // Initial fetch
   useEffect(() => {
     getAllCategory();
     getTotal();
   }, []);
 
-  // Load more on page change
   useEffect(() => {
     if (page === 1) return;
     loadMore();
   }, [page]);
 
-  // Reset products if no filter
   useEffect(() => {
     if (!checked.length && !radio.length) {
       getAllProducts();
@@ -239,7 +230,7 @@ const HomePage = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
             onClick={() => productsRef.current?.scrollIntoView({ behavior: "smooth" })}
-            style={{ borderRadius: '5px', width: '100px' }}
+            style={{ borderRadius: '9px', width: '180px' }}
             className="mt-8 px-10 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xl font-bold rounded-full shadow-xl transition-all hover:from-purple-700 hover:to-indigo-700 uppercase tracking-wider"
           >
             Start Shopping
@@ -279,19 +270,16 @@ const HomePage = () => {
         )}
       </AnimatePresence>
 
-      {/* Products Container */}
       <div
         className="relative z-10 grid grid-cols-1 md:grid-cols-5 gap-8 px-4 md:px-12 py-10"
         style={{
           background: "linear-gradient(135deg, #f0f4f8 0%, #ffffff 100%)",
         }}
       >
-        {/* Desktop Sidebar Filters */}
         <div className="hidden md:block md:col-span-1">
           <FilterSidebarContent />
         </div>
 
-        {/* Products */}
         <main ref={productsRef} className="md:col-span-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <AnimatePresence>
@@ -358,7 +346,6 @@ const HomePage = () => {
             </AnimatePresence>
           </div>
 
-          {/* Load More Button */}
           <div className="flex justify-center mt-12 relative mt-3">
             {products && products.length < total && (
               <motion.button
