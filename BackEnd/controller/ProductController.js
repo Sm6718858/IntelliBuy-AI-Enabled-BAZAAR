@@ -2,6 +2,7 @@ import slugify from "slugify";
 import Product from "../models/ProductModel.js";
 import fs from "fs";
 import Category from "../models/CategoryModel.js";
+import redisClient from "../config/redis.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -62,22 +63,42 @@ export const createProduct = async (req, res) => {
 
 
 export const getProduct = async (req, res) => {
-  try {
-    const products = await Product.find({}).select("-photo").populate("category").limit(12).sort({ createdAt: -1 });
-    res.status(201).json({
+  const start = Date.now();
+
+  const cachedProducts = await redisClient.get("products");
+
+  if (cachedProducts) {
+    console.log("Redis HIT");
+    console.log("⏱getProduct (Redis):", Date.now() - start, "ms");
+
+    return res.json({
       success: true,
-      message: "Products fetched successfully",
-      products
-    });
-  } catch (error) {
-    console.log("error from get-product api");
-    res.status(500).json({
-      success: false,
-      message: "error from get-product api",
-      error: error.message
+      source: "redis",
+      products: JSON.parse(cachedProducts),
     });
   }
-}
+
+  console.log("Redis MISS → MongoDB");
+
+  const products = await Product.find({})
+    .populate("category")
+    .sort({ createdAt: -1 });
+
+  await redisClient.setEx(
+    "products",
+    60,
+    JSON.stringify(products)
+  );
+
+  console.log("⏱getProduct (MongoDB):", Date.now() - start, "ms");
+
+  res.json({
+    success: true,
+    source: "mongodb",
+    products,
+  });
+};
+
 export const singleProduct = async (req, res) => {
   try {
     const { slug } = req.params;

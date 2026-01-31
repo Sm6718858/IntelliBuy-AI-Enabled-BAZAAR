@@ -1,5 +1,7 @@
 import slugify from "slugify";
 import Category from "../models/CategoryModel.js";
+import redisClient from "../config/redis.js";
+
 
 export const CatagoryController = async (req, res) => {
     try {
@@ -58,23 +60,50 @@ export const UpdateCatagory = async (req,res) =>{
     }
 }
 
+
 export const getCategories = async (req, res) => {
-    try {
-        const categories = await Category.find({});
-        res.status(200).json({
-            success: true,
-            message: "Categories fetched successfully",
-            categories
-        });
-    } catch (error) {
-        console.log("error from get catagory api");
-        res.status(500).json({
-            success: false,
-            message: "error from get catagory api",
-            error: error.message
-        });
+  try {
+    const start = Date.now();
+    const cachedCategories = await redisClient.get("categories");
+
+    if (cachedCategories) {
+      console.log("Redis HIT → categories");
+      console.log("getCategories (Redis):", Date.now() - start, "ms");
+
+      return res.status(200).json({
+        success: true,
+        source: "redis",
+        categories: JSON.parse(cachedCategories),
+      });
     }
-}
+
+    console.log("Redis MISS → MongoDB");
+
+    const categories = await Category.find({});
+
+    await redisClient.setEx(
+      "categories",
+      300,
+      JSON.stringify(categories)
+    );
+
+    console.log("getCategories (MongoDB):", Date.now() - start, "ms");
+
+    res.status(200).json({
+      success: true,
+      source: "mongodb",
+      categories,
+    });
+  } catch (error) {
+    console.log("error from get category api", error);
+    res.status(500).json({
+      success: false,
+      message: "error from get category api",
+      error: error.message,
+    });
+  }
+};
+
 
 export const SingleCategory = async (req, res) => {
     try {
