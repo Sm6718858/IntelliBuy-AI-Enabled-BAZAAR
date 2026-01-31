@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 const Products = () => {
   const [products, setProducts] = useState([]);
 
-  //getall products
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/get-products`);
@@ -17,7 +16,6 @@ const Products = () => {
     }
   };
 
-  //lifecycle method
   useEffect(() => {
     getAllProducts();
   }, []);
@@ -38,10 +36,16 @@ const Products = () => {
               >
                 <div className="card m-2" style={{ width: "18rem" }}>
                   <img
-                    src={`${import.meta.env.VITE_API_BASE_URL}/api/product-Photo/${p._id}`}
+                    src={p.image}
                     className="card-img-top"
                     alt={p.name}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src =
+                        "https://via.placeholder.com/300x300?text=Product+Image";
+                    }}
                   />
+
                   <div className="card-body">
                     <h5 className="card-title">{p.name}</h5>
                     <p className="card-text">{p.description}</p>

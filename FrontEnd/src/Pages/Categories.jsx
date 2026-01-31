@@ -8,7 +8,7 @@ const Category = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-sky-100 via-purple-100 to-pink-100 py-12 px-4">
       <h1 className="text-center text-4xl font-extrabold text-gray-800 mb-10 drop-shadow-lg">
-        🌈 Explore IntelliBuy Categories
+         Explore IntelliBuy Categories
       </h1>
 
       <div style={{ textDecoration: 'none' }} className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

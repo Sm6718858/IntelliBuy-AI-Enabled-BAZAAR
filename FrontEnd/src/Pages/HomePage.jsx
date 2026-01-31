@@ -163,7 +163,7 @@ const HomePage = () => {
       </div>
 
       <Divider orientation="left" className="text-lg !font-bold !text-indigo-600">
-       ** Price Range **
+        ** Price Range **
       </Divider>
       <Radio.Group
         onChange={(e) => setRadio(e.target.value)}
@@ -183,14 +183,13 @@ const HomePage = () => {
 
       <button
         onClick={resetFilters}
-        style={{ borderRadius: '20px' ,marginLeft: isMobile ? '20%' : '0', marginTop: '10px'}}
+        style={{ borderRadius: '20px', marginLeft: isMobile ? '20%' : '0', marginTop: '10px' }}
         className="w-[200px] py-3 bg-pink-600 text-white font-bold rounded-lg shadow-md hover:bg-pink-800 transition-all transform hover:scale-[1.02]"
       >
         RESET FILTERS
       </button>
     </motion.aside>
   );
-  // ---------------------------------------------------
 
   return (
     <div className="relative min-h-screen">
@@ -295,7 +294,7 @@ const HomePage = () => {
                 >
                   <div className="relative h-48 w-full overflow-hidden bg-gray-50 p-4">
                     <img
-                      src={`${import.meta.env.VITE_API_BASE_URL}/api/product-photo/${p._id}`}
+                      src={p.image}
                       alt={p.name}
                       className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
@@ -305,6 +304,7 @@ const HomePage = () => {
                           "https://via.placeholder.com/300x300?text=Product+Image";
                       }}
                     />
+
                     <div className="absolute top-2 right-2 px-3 py-1 bg-indigo-500 text-white text-xs font-bold rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                       New
                     </div>

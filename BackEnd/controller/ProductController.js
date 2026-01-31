@@ -8,45 +8,58 @@ dotenv.config();
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, price, description, category, quantity, shipping } = req.fields;
-    const { photo } = req.files;
-    switch (true) {
-      case !name:
-        return res.status(400).json({ success: false, message: "Name is required" });
-      case !description:
-        return res.status(400).json({ success: false, message: "Description is required" });
-      case !price:
-        return res.status(400).json({ success: false, message: "Price is required" });
-      case !category:
-        return res.status(400).json({ success: false, message: "Category is required" });
-      case !quantity:
-        return res.status(400).json({ success: false, message: "Quantity is required" });
-      case photo && photo.size > 1000000:
-        return res.status(400).json({ success: false, message: "Photo size should be less than 1MB" });
+    const {
+      name,
+      description,
+      price,
+      quantity,
+      category,
+      shipping,
+      image,
+    } = req.body;
+
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !quantity ||
+      !category ||
+      !image
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
     }
-    const products = new Product({
-      ...req.fields,
-      slug: slugify(name),
+
+    const product = new Product({
+      name,
+      slug: slugify(name, { lower: true }) + "-" + Date.now(),
+      description,
+      price: Number(price),
+      quantity: Number(quantity),
+      category,
+      shipping: Boolean(shipping),
+      image,
     });
-    if (photo) {
-      products.photo.data = fs.readFileSync(photo.path);
-      products.photo.contentType = photo.type;
-    }
-    await products.save();
+
+    await product.save();
+
     res.status(201).json({
       success: true,
       message: "Product created successfully",
-      products
+      product,
     });
   } catch (error) {
-    console.log("error from create product api");
+    console.error(error);
     res.status(500).json({
       success: false,
-      message: "error from create product api",
-      error: error.message
+      message: error.message,
     });
   }
-}
+};
+
+
 
 export const getProduct = async (req, res) => {
   try {
@@ -69,7 +82,7 @@ export const singleProduct = async (req, res) => {
   try {
     const { slug } = req.params;
     const product = await Product.findOne({ slug })
-      .select("-photo")
+      .select()
       .populate("category")
       .populate("reviews.user", "name");
 
@@ -94,23 +107,23 @@ export const singleProduct = async (req, res) => {
   }
 };
 
-export const productPhoto = async (req, res) => {
-  try {
-    const pid = req.params.pid;
-    const product = await Product.findById(pid).select("photo");
-    if (product.photo.data) {
-      res.set("Content-type", product.photo.contentType);
-      return res.status(200).send(product.photo.data);
-    }
-  } catch (error) {
-    console.log("error from product Photo api");
-    res.status(500).json({
-      success: false,
-      message: "error from product Photo api",
-      error: error.message
-    });
-  }
-}
+// export const productPhoto = async (req, res) => {
+//   try {
+//     const pid = req.params.pid;
+//     const product = await Product.findById(pid).select("photo");
+//     if (product.photo.data) {
+//       res.set("Content-type", product.photo.contentType);
+//       return res.status(200).send(product.photo.data);
+//     }
+//   } catch (error) {
+//     console.log("error from product Photo api");
+//     res.status(500).json({
+//       success: false,
+//       message: "error from product Photo api",
+//       error: error.message
+//     });
+//   }
+// }
 
 export const deleteProduct = async (req, res) => {
   try {
@@ -138,27 +151,31 @@ export const deleteProduct = async (req, res) => {
 }
 export const updateProduct = async (req, res) => {
   try {
-    const { name, price, description, category, quantity, shipping } = req.fields;
-    const { photo } = req.files;
+    const {
+      name,
+      price,
+      description,
+      category,
+      quantity,
+      shipping,
+      image, 
+    } = req.body;
 
-    switch (true) {
-      case !name:
-        return res.status(400).json({ success: false, message: "Name is required" });
-      case !description:
-        return res.status(400).json({ success: false, message: "Description is required" });
-      case !price:
-        return res.status(400).json({ success: false, message: "Price is required" });
-      case !category:
-        return res.status(400).json({ success: false, message: "Category is required" });
-      case !quantity:
-        return res.status(400).json({ success: false, message: "Quantity is required" });
-      case photo && photo.size > 1000000:
-        return res.status(400).json({ success: false, message: "Photo should be less than 1MB" });
+    if (!name || !description || !price || !category || !quantity) {
+      return res.status(400).json({
+        success: false,
+        message: "All required fields must be provided",
+      });
     }
+
     const product = await Product.findById(req.params.pid);
     if (!product) {
-      return res.status(404).json({ success: false, message: "Product not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
     }
+
     product.name = name;
     product.slug = slugify(name);
     product.price = price;
@@ -167,9 +184,8 @@ export const updateProduct = async (req, res) => {
     product.quantity = quantity;
     product.shipping = shipping;
 
-    if (photo) {
-      product.photo.data = fs.readFileSync(photo.path);
-      product.photo.contentType = photo.type;
+    if (image) {
+      product.image = image;
     }
 
     await product.save();
@@ -179,16 +195,15 @@ export const updateProduct = async (req, res) => {
       message: "Product updated successfully",
       product,
     });
-
   } catch (error) {
     console.log("Error from product update API", error);
     res.status(500).json({
       success: false,
-      message: "Error from product update API",
-      error: error.message,
+      message: error.message,
     });
   }
 };
+
 
 export const productFiltersController = async (req, res) => {
   try {
@@ -234,7 +249,7 @@ export const productListController = async (req, res) => {
     const page = req.params.page ? req.params.page : 1;
     const products = await Product
       .find({})
-      .select("-photo")
+      .select()
       .skip((page - 1) * perPage)
       .limit(perPage)
       .sort({ createdAt: -1 });
@@ -283,7 +298,7 @@ export const realtedProductController = async (req, res) => {
         category: cid,
         _id: { $ne: pid },
       })
-      .select("-photo")
+      .select()
       .limit(3)
       .populate("category");
     res.status(200).send({

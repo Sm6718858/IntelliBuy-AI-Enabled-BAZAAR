@@ -104,34 +104,34 @@ const ProductDetails = () => {
     <div className="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen overflow-x-hidden">
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="flex items-center mb-6">
-  <button
-    onClick={() => navigate(-1)}
-    className="p-2 rounded-full hover:bg-gray-200 transition"
-    aria-label="Go back"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-5 w-5 text-gray-700"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M10 19l-7-7m0 0l7-7m-7 7h18"
-      />
-    </svg>
-  </button>
-</div>
+          <button
+            onClick={() => navigate(-1)}
+            className="p-2 rounded-full hover:bg-gray-200 transition"
+            aria-label="Go back"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-gray-700"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+          </button>
+        </div>
 
 
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           <div className="bg-white rounded-2xl shadow-md overflow-hidden mt-2 transition-all duration-300 hover:shadow-xl">
             <div className="p-3 sm:p-5 flex justify-center items-center bg-white rounded-md">
               <img
-                src={`${import.meta.env.VITE_API_BASE_URL}/api/product-photo/${product._id}`}
+                src={product.image}
                 alt={product.name}
                 className="w-full max-w-[500px] h-auto object-contain transition-transform duration-300 hover:scale-105"
                 onError={(e) => {
@@ -140,6 +140,7 @@ const ProductDetails = () => {
                     "https://via.placeholder.com/500x500?text=Product+Image";
                 }}
               />
+
             </div>
           </div>
 
@@ -201,7 +202,7 @@ const ProductDetails = () => {
 
             <div className="mt-auto space-y-3 flex">
               <button
-              style={{
+                style={{
                   borderBottomLeftRadius: "15px",
                 }}
                 className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-2 px-4 shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center"
@@ -422,7 +423,7 @@ const ProductDetails = () => {
                 >
                   <div className="relative h-48 bg-gray-100 flex items-center justify-center p-4">
                     <img
-                      src={`${import.meta.env.VITE_API_BASE_URL}/api/product-photo/${p._id}`}
+                      src={p.image}
                       alt={p.name}
                       className="h-full w-full object-contain"
                       onError={(e) => {
@@ -431,6 +432,7 @@ const ProductDetails = () => {
                           "https://via.placeholder.com/300?text=Product";
                       }}
                     />
+
                     <button
                       onClick={() => {
                         setCart([...cart, p]);

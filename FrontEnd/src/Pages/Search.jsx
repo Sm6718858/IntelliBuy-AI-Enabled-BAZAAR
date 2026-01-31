@@ -5,7 +5,7 @@ import { useCart } from "../Context/Cart";
 import toast from "react-hot-toast";
 
 const Search = () => {
-  const [cart,setCart] = useCart();
+  const [cart, setCart] = useCart();
   const [values, setValues] = useSearch();
   const navigate = useNavigate();
 
@@ -23,10 +23,16 @@ const Search = () => {
             {values?.results.map((p) => (
               <div key={p._id} className="card m-2" style={{ width: "18rem" }}>
                 <img
-                  src={`${import.meta.env.VITE_API_BASE_URL}/api/product-photo/${p._id}`}
-                  className="card-img-top"
+                  src={p.image}
                   alt={p.name}
+                  className="w-full h-48 object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src =
+                      "https://via.placeholder.com/400x300?text=Product+Image";
+                  }}
                 />
+
                 <div className="card-body">
                   <h5 className="card-title">{p.name}</h5>
                   <p className="card-text">

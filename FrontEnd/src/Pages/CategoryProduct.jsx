@@ -45,10 +45,16 @@ const CategoryProduct = () => {
                 className="w-[18rem] bg-white rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition duration-300 overflow-hidden border border-gray-200"
               >
                 <img
-                  src={`${import.meta.env.VITE_API_BASE_URL}/api/product-Photo/${p._id}`}
+                  src={p.image}
                   alt={p.name}
                   className="w-full h-48 object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src =
+                      "https://via.placeholder.com/400x300?text=Product+Image";
+                  }}
                 />
+
                 <div className="p-4 flex flex-col justify-between min-h-[200px]">
                   <h5 className="text-lg font-semibold text-gray-800">{p.name}</h5>
                   <p className="text-gray-500 text-sm mb-1">

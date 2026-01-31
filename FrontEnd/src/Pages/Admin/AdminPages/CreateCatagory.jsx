@@ -158,7 +158,6 @@ const CreateCatagory = () => {
               </table>
             </div>
 
-            {/* Edit Modal */}
             <Modal
               title="Edit Category"
               onCancel={() => setVisible(false)}
