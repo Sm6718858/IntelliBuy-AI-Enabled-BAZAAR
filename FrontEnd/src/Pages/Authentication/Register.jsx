@@ -37,22 +37,22 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-blue-100 via-purple-100 to-blue-200 flex items-center justify-center px-4 overflow-hidden">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 overflow-hidden">
 
       <Toaster position="top-center" />
       <div className="inside bg">
         <div className="wrapper">
-          <div className="w-full max-w-md bg-green-100 shadow-2xl rounded-2xl p-8 animate-fade-in-down">
-            <h1 className="text-3xl font-bold text-center text-[#242D47] mb-6">Register 📝</h1>
+          <div className="w-full max-w-md bg-transparent border-1 border-blue-800 shadow-2xl shadow-blue-300 rounded-2xl p-8 animate-fade-in-down">
+            <h1 className="text-5xl font-bold text-center text-[#242D47]  mb-6">Register</h1>
 
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            <form className="space-y-5 mt-4" onSubmit={handleSubmit}>
               <input
                 type="text"
                 name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Full Name"
-                className="w-full px-4 py-3 border text-black border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-gray-500 transition"
+                className="w-full px-4 py-3 border text-black border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-200 placeholder-gray-500 transition"
                 required
               />
               <input
@@ -61,7 +61,7 @@ const Register = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email Address"
-                className="w-full px-4 py-3 border text-black border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-gray-500 transition"
+                className="w-full px-4 py-3 border text-black border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-200 placeholder-gray-500 transition"
                 required
               />
               <input
@@ -70,7 +70,7 @@ const Register = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
-                className="w-full px-4 py-3 border text-black border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-gray-500 transition"
+                className="w-full px-4 py-3 border text-black border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-200 placeholder-gray-500 transition"
                 required
               />
               <input
@@ -79,7 +79,7 @@ const Register = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="Phone Number"
-                className="w-full px-4 py-3 border text-black border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-gray-500 transition"
+                className="w-full px-4 py-3 border text-black border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-200 placeholder-gray-500 transition"
                 required
               />
               <input
@@ -88,7 +88,7 @@ const Register = () => {
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
                 placeholder="Role (e.g. Admin(1), Other(0))"
-                className="w-full px-4 py-3 border text-black border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-gray-500 transition"
+                className="w-full px-4 py-3 border text-black border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-200 placeholder-gray-500 transition"
               />
               <input
                 type="text"
@@ -96,13 +96,13 @@ const Register = () => {
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
                 placeholder="What is your favorite color?"
-                className="w-full px-4 py-3 border text-black border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-gray-500 transition"
+                className="w-full px-4 py-3 border text-black border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-200 placeholder-gray-500 transition"
               />
 
               <button
                 type="submit"
-                style={{borderBottomLeftRadius: '20px', borderBottomRightRadius: '20px'}}
-                className="w-full bg-[#242D47] text-white py-3 rounded-4xl hover:bg-[#1c2339] transition duration-300 font-semibold mt-2"
+                style={{borderBottomLeftRadius: '9px', borderBottomRightRadius: '9px'}}
+                className="w-full bg-blue-800 text-white py-3 rounded-4xl hover:bg-blue-700 transition duration-300 font-semibold mt-2"
               >
                 Register
               </button>

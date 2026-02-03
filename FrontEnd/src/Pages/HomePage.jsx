@@ -194,7 +194,7 @@ const HomePage = () => {
   return (
     <div className="relative min-h-screen">
 
-      <section className="relative w-full h-[85vh] md:h-[90vh] overflow-hidden">
+      {/* <section className="relative w-full h-[85vh] md:h-[90vh] overflow-hidden">
         <video
           autoPlay
           loop
@@ -235,11 +235,10 @@ const HomePage = () => {
             Start Shopping
           </motion.button>
         </div>
-      </section>
+      </section> */}
 
 
 
-      {/* Mobile Filter Button */}
       <div className="md:hidden sticky top-0 z-20 p-4 bg-white/95 shadow-lg flex justify-center">
         <button
           onClick={() => setMobileFilterOpen(true)}

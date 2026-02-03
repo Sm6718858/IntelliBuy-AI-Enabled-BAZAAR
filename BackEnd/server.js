@@ -7,6 +7,7 @@ import productRoute from './routes/ProductRoute.js';
 import chatRoutes from "./routes/chatRoutes.js";
 import paymentRountes from './routes/PaymentRoute.js'
 import initializePaymentCleanup from './models/PaymentCleanup.js';
+import tryOnRoutes from './routes/tryOnRoutes.js'
 // import "./controller/autoProductUpdate.js";
 import cors from 'cors';
 
@@ -24,6 +25,7 @@ app.use('/api', CatagoryRoute);
 app.use('/api',productRoute);
 app.use("/api", chatRoutes);
 app.use('/api',paymentRountes);
+app.use("/api/ai", tryOnRoutes);
 
 
 app.get('/', (req, res) => {

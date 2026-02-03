@@ -27,6 +27,7 @@ const productSchema = new mongoose.Schema(
     reviews: [reviewSchema],
     numReviews: { type: Number, default: 0 },
     averageRating: { type: Number, default: 0 },
+    tryOnEnabled: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

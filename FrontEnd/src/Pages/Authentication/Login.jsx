@@ -22,7 +22,6 @@ const Login = () => {
       if (res.data.success) {
         toast.success(res.data.message || "Login successful!");
 
-        // Update context and localStorage
         setAuth({
           user: res.data.user,
           token: res.data.token,
@@ -42,19 +41,19 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-blue-100 via-purple-100 to-blue-200 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4">
       <Toaster position="top-center" />
-      <div className="w-full max-w-md bg-green-100 shadow-2xl rounded-2xl p-8 animate-fade-in-down">
-        <h1 className="text-3xl font-bold text-center text-[#242D47] mb-6">Login</h1>
+      <div className="w-full max-w-md bg-transparent border-1 border-blue-800 shadow-2xl shadow-blue-400 rounded-2xl p-8 animate-fade-in-down">
+        <h1 className="text-3xl font-bold text-center text-black font-bold mb-6">Login</h1>
 
-        <form className="space-y-5" onSubmit={handleSubmit}>
+        <form className="space-y-5 mt-4" onSubmit={handleSubmit}>
           <input
             type="email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email Address"
-            className="w-full px-4 py-3 border text-black  border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-gray-500 transition"
+            className="w-full px-4 py-3 border text-black border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-200 placeholder-gray-500 transition"
             required
           />
           <input
@@ -63,22 +62,22 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="w-full px-4 py-3 border text-black border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder-gray-500 transition"
+            className="w-full px-4 py-3 border text-black border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-200 placeholder-gray-500 transition"
             required
           />
 
           <button
             type="button"
             onClick={() => navigate('/Forgot_Password')}
-            className="w-full text-sm text-blue-600 hover:underline text-right"
+            className="w-full text-sm text-blue-800 hover:underline text-right"
           >
             Forgot Password?
           </button>
 
           <button
             type="submit"
-            style={{borderBottomLeftRadius: '20px', borderBottomRightRadius: '20px'}}
-            className="w-full bg-[#242D47] text-white py-3 rounded-4xl hover:bg-[#1c2339] transition duration-300 font-semibold mt-2"
+            style={{borderBottomLeftRadius: '9px', borderBottomRightRadius: '9px'}}
+            className="w-full bg-blue-800 text-white py-3  hover:bg-blue-700 transition duration-300 font-semibold mt-2"
           >
             Login
           </button>
