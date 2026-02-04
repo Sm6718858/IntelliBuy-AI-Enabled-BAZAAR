@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../Context/Auth';
-import toast from 'react-hot-toast';
-import SearchInput from '../Form/SearchInput';
-import useCategory from '../../Hook/useCategory';
-import { useCart } from '../../Context/Cart';
-import { Badge } from 'antd';
-import { Menu, X } from 'lucide-react';
-import logo from '../../assets/Logo.jpg';
+import React, { useState } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/Auth";
+import toast from "react-hot-toast";
+import SearchInput from "../Form/SearchInput";
+import useCategory from "../../Hook/useCategory";
+import { useCart } from "../../Context/Cart";
+import { Badge } from "antd";
+import { Menu, X } from "lucide-react";
+import logo from "../../assets/Logo.jpg";
 
 const Header = () => {
   const [cart] = useCart();
@@ -19,42 +19,68 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    setAuth({ user: null, token: '' });
-    localStorage.removeItem('auth');
-    toast.success('Logout successful!');
-    navigate('/login');
+    setAuth({ user: null, token: "" });
+    localStorage.removeItem("auth");
+    toast.success("Logout successful!");
+    navigate("/login");
     setUserDropdownOpen(false);
   };
 
   const linkStyle = ({ isActive }) =>
-    `px-4 py-2 font-semibold text-sm tracking-wide transition-all duration-300 no-underline
-     ${isActive ? 'bg-white text-indigo-700 shadow-md rounded-full' : 'text-white hover:bg-amber-400 hover:text-black rounded-full'}`;
+  `px-4 py-2 rounded-md font-medium text-sm transition-all duration-200
+   ${
+     isActive
+       ? "text-white bg-blue-700 md:bg-blue-600"
+       : "text-white hover:bg-blue-700 md:text-gray-700 md:hover:bg-blue-600 md:hover:text-white"
+   }`;
+
 
   return (
-    <header className="bg-[#3302B0] shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-        
+    <header
+      className="
+        sticky top-0 z-50
+        backdrop-blur-xl
+        bg-gradient-to-r from-[#1e1b4b] via-[#312e81] to-[#1e1b4b]
+        md:bg-white md:backdrop-blur-0
+        md:border-b md:border-gray-200
+      "
+    >
+      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+
         <div className="flex items-center justify-between w-full md:w-auto">
-          <NavLink to="/" style={{ textDecoration: 'none' }} className="flex items-center gap-1">
-            <img src={logo} alt="IntelliBuy Logo" className="image-container h-8 sm:h-12 md:h-11 w-auto object-contain "  />
-            <span className="text-white text-xl sm:text-2xl md:text-3xl font-bold tracking-wide sm:inline">IntelliBuy</span>
+          <NavLink
+            to="/"
+            style={{ textDecoration: "none" }}
+            className="flex items-center gap-2"
+          >
+            <img
+              src={logo}
+              alt="IntelliBuy"
+              className="h-10 w-auto rounded-md"
+            />
+            <span className="text-white md:text-gray-900 text-2xl font-extrabold tracking-wide">
+              IntelliBuy
+            </span>
           </NavLink>
 
-          <button className="text-white md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+
+          <button
+            className="text-white md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
 
-        <div className="w-full md:w-auto">
+        <div className="w-full md:w-80">
           <SearchInput />
         </div>
 
         <div
-          className={`w-full md:w-auto flex-col md:flex md:flex-row gap-4 md:gap-6 items-center text-sm md:text-base transition-all duration-500 ease-in-out ${
-            mobileMenuOpen ? 'flex animate-slideDown' : 'hidden md:flex'
-          }`}
+          className={`w-full md:w-auto flex-col md:flex md:flex-row gap-3 md:gap-5 items-center transition-all duration-300
+          ${mobileMenuOpen ? "flex mt-4" : "hidden md:flex"}`}
         >
-          <NavLink to="/home" style={{ textDecoration: 'none' }} className={linkStyle}>
+          <NavLink to="/home" className={linkStyle} style={{ textDecoration: "none" }}>
             Home
           </NavLink>
 
@@ -64,26 +90,31 @@ const Header = () => {
                 setCategoryDropdownOpen(!categoryDropdownOpen);
                 setUserDropdownOpen(false);
               }}
-              className="text-white px-4 py-2 font-semibold text-sm hover:bg-amber-400 hover:text-black rounded transition-all"
+              className="
+                  px-4 py-2 font-medium text-sm transition
+                  text-white hover:bg-orange-500
+                  md:text-gray-700 md:hover:bg-orange-500 md:rounded-4xl
+                "
             >
-              Categories ▼
+              Categories ▾
             </button>
+
             {categoryDropdownOpen && (
-              <div className="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-lg z-50 overflow-hidden animate-fadeIn">
+              <div className="absolute left-0 mt-3 w-52 bg-white rounded-2xl shadow-xl overflow-hidden z-50" style={{ textDecoration: "none" }}>
                 <Link
+                style={{ textDecoration: "none" }}
                   to="/categories"
-                  style={{ textDecoration: 'none' }}
-                  // className="block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded no-underline"
+                  className="block px-4 py-3 text-sm hover:bg-gray-100"
                   onClick={() => setCategoryDropdownOpen(false)}
                 >
                   All Categories
                 </Link>
                 {Category?.map((c) => (
                   <Link
+                  style={{ textDecoration: "none" }}
                     key={c._id}
-                    style={{ textDecoration: 'none' }}
                     to={`/category/${c.slug}`}
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100 no-underline"
+                    className="block px-4 py-3 text-sm hover:bg-gray-100"
                     onClick={() => setCategoryDropdownOpen(false)}
                   >
                     {c.name}
@@ -95,10 +126,10 @@ const Header = () => {
 
           {!auth.user ? (
             <>
-              <NavLink style={{ textDecoration: 'none' }} to="/login" className={linkStyle}>
+              <NavLink to="/login" className={linkStyle} style={{ textDecoration: "none" }}>
                 Login
               </NavLink>
-              <NavLink style={{ textDecoration: 'none' }} to="/register" className={linkStyle}>
+              <NavLink to="/register" className={linkStyle} style={{ textDecoration: "none" }}>
                 Register
               </NavLink>
             </>
@@ -109,21 +140,30 @@ const Header = () => {
                   setUserDropdownOpen(!userDropdownOpen);
                   setCategoryDropdownOpen(false);
                 }}
-                className="text-white px-4 py-2 font-semibold text-sm hover:bg-amber-400 hover:text-black rounded-full transition-all rounded"
+                className="
+                  px-4 py-2 rounded-md font-medium transition
+                  bg-white/10 text-white hover:bg-blue-800
+                  md:bg-blue-5800 md:text-gray-800 md:hover:bg-blue-800
+                "
               >
-                {auth.user.name?.toUpperCase() || 'User'} ▼
+                {auth.user.name?.toUpperCase()} ▾
               </button>
+
               {userDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-44 bg-white text-black rounded-xl shadow-lg z-50 overflow-hidden animate-fadeIn">
+                <div className="absolute right-0 mt-3 w-48 bg-white rounded-2xl shadow-xl overflow-hidden z-50">
                   <NavLink
-                    to={`/dashboard/${auth?.user?.role === 1 ? 'admin' : 'user'}`}
-                    className="block px-4 py-2 hover:bg-gray-200 no-underline"
+                  style={{ textDecoration: "none" }}
+                    to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"
+                      }`}
+                    className="block px-4 py-3 hover:bg-gray-100"
                     onClick={() => setUserDropdownOpen(false)}
-                    style={{ textDecoration: 'none' }}
                   >
                     Dashboard
                   </NavLink>
-                  <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-gray-200">
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-3 hover:bg-orange-400"
+                  >
                     Logout
                   </button>
                 </div>
@@ -131,8 +171,8 @@ const Header = () => {
             </div>
           )}
 
-          <Badge count={cart?.length} offset={[0, 5]} showZero>
-            <NavLink style={{ textDecoration: 'none' }} to="/cart" className={linkStyle}>
+          <Badge count={cart?.length} showZero>
+            <NavLink to="/cart" className={linkStyle} style={{ textDecoration: "none" }}>
               Cart
             </NavLink>
           </Badge>

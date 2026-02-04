@@ -31,109 +31,152 @@ const CreateProduct = () => {
     getCategories();
   }, []);
 
-  const getPresignedUrl = async (file) => {
-    const { data } = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/api/s3/presigned-url`,
-      { fileType: file.type.split("/")[1] },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    return data;
-  };
-
-  const uploadToS3 = async (url, file) => {
-    const res = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": file.type
-      },
-      body: file
-    });
-
-    if (!res.ok) {
-      throw new Error("S3 upload failed");
-    }
-
-  };
-
   const handleCreate = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const formData = new FormData();
-    formData.append("image", photo);
+    try {
+      const formData = new FormData();
+      formData.append("image", photo);
 
-    const uploadRes = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/api/upload-product-image`,
-      formData,
-      {
-        headers: {
-          // Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+      const uploadRes = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/upload-product-image`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
-    const imageUrl = uploadRes.data.imageUrl;
+      const imageUrl = uploadRes.data.imageUrl;
 
-    await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/api/create-product`,
-      {
-        name,
-        description,
-        price,
-        quantity,
-        category,
-        shipping,
-        image: imageUrl,
-      },
-      // { headers: { Authorization: `Bearer ${token}` } }
-    );
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/create-product`,
+        {
+          name,
+          description,
+          price,
+          quantity,
+          category,
+          shipping,
+          image: imageUrl,
+        }
+      );
 
-    toast.success("Product Created");
-    navigate("/dashboard/admin/products");
-  } catch (err) {
-    toast.error("Upload failed");
-  }
-};
-
+      toast.success("Product Created");
+      navigate("/dashboard/admin/products");
+    } catch (err) {
+      toast.error("Upload failed");
+    }
+  };
 
   return (
-    <div className="flex">
-      <AdminMenu />
-      <div className="p-6 w-full">
-        <h2>Create Product</h2>
+    <div className="min-h-screen bg-gray-100 p-4 md:p-8">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
 
-        <Select onChange={setCategory} className="w-full mb-3">
-          {categories.map((c) => (
-            <Option key={c._id} value={c._id}>
-              {c.name}
-            </Option>
-          ))}
-        </Select>
+        <aside className="md:w-1/4 bg-white rounded-xl shadow-lg p-4 h-fit">
+          <AdminMenu />
+        </aside>
 
-        <input type="file" onChange={(e) => setPhoto(e.target.files[0])} />
-        <input placeholder="Name" onChange={(e) => setName(e.target.value)} />
-        <textarea
-          placeholder="Description"
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Price"
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Quantity"
-          onChange={(e) => setQuantity(e.target.value)}
-        />
+        <main className="md:w-3/4 bg-white rounded-2xl shadow-xl p-6 md:p-10">
+          <h1 className="md:text-xl font-bold mb-8 ml-2 text-center text-indigo-700 uppercase">
+             Create New Product
+          </h1>
 
-        <Select onChange={setShipping} className="w-full">
-          <Option value={false}>No</Option>
-          <Option value={true}>Yes</Option>
-        </Select>
+          <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
 
-        <button onClick={handleCreate}>CREATE</button>
+            <div>
+              <label className="font-semibold block mb-2">Category</label>
+              <Select
+                onChange={setCategory}
+                className="w-full"
+                size="large"
+                placeholder="Select category"
+              >
+                {categories.map((c) => (
+                  <Option key={c._id} value={c._id}>
+                    {c.name}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+
+            <div>
+              <label className="font-semibold block mb-2">Shipping</label>
+              <Select
+                onChange={setShipping}
+                className="w-full"
+                size="large"
+              >
+                <Option value={false}>No</Option>
+                <Option value={true}>Yes</Option>
+              </Select>
+            </div>
+
+            <div>
+              <label className="font-semibold block mb-2">Product Name</label>
+              <input
+                type="text"
+                placeholder="Enter product name"
+                className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label className="font-semibold block mb-2">Price (₹)</label>
+              <input
+                type="number"
+                placeholder="Enter price"
+                className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label className="font-semibold block mb-2">Quantity</label>
+              <input
+                type="number"
+                placeholder="Enter quantity"
+                className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label className="font-semibold block mb-2">Product Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setPhoto(e.target.files[0])}
+              />
+              {photo && (
+                <img
+                  src={URL.createObjectURL(photo)}
+                  alt="preview"
+                  className="h-24 mt-3 rounded-lg border object-cover"
+                />
+              )}
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="font-semibold block mb-2">Description</label>
+              <textarea
+                rows="4"
+                placeholder="Write product description..."
+                className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+
+            <div className="md:col-span-2 flex justify-end">
+              <button
+                type="submit"
+                style={{borderRadius:'20px'}}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-xl transition w-[150px]"
+              >
+                 Create Product
+              </button>
+            </div>
+
+          </form>
+        </main>
       </div>
     </div>
   );
