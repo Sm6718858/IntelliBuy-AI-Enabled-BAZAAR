@@ -3,36 +3,17 @@ import Product from "../models/ProductModel.js";
 import fs from "fs";
 import Category from "../models/CategoryModel.js";
 import redisClient from "../config/redis.js";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 export const createProduct = async (req, res) => {
   try {
-    const {
-      name,
-      description,
-      price,
-      quantity,
-      category,
-      shipping,
-      image,
-    } = req.body;
+    const {name,description,price,quantity,category,shipping,image} = req.body;
 
-    if (
-      !name ||
-      !description ||
-      !price ||
-      !quantity ||
-      !category ||
-      !image
-    ) {
+    if (!name || !description || !price || !quantity || !category || !image){
       return res.status(400).json({
         success: false,
         message: "All fields are required",
       });
     }
-
     const product = new Product({
       name,
       slug: slugify(name, { lower: true }) + "-" + Date.now(),
@@ -45,6 +26,7 @@ export const createProduct = async (req, res) => {
     });
 
     await product.save();
+    await redisClient.del("products");
 
     res.status(201).json({
       success: true,
@@ -59,8 +41,6 @@ export const createProduct = async (req, res) => {
     });
   }
 };
-
-
 
 export const getProduct = async (req, res) => {
   const start = Date.now();
@@ -156,6 +136,7 @@ export const deleteProduct = async (req, res) => {
         message: "Product not found"
       });
     }
+    await redisClient.del("products");
     res.status(200).json({
       success: true,
       message: "Product Deleted successfully",
@@ -210,12 +191,14 @@ export const updateProduct = async (req, res) => {
     }
 
     await product.save();
+    await redisClient.del("products");
 
     res.status(200).json({
       success: true,
       message: "Product updated successfully",
       product,
     });
+    
   } catch (error) {
     console.log("Error from product update API", error);
     res.status(500).json({

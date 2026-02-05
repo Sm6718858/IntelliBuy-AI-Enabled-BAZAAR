@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import AdminMenu from "../AdminMenu";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const location = useLocation();
 
   const getAllProducts = async () => {
     try {
@@ -14,13 +15,13 @@ const Products = () => {
       );
       setProducts(data.products);
     } catch (error) {
-      toast.error("❌ Something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
   useEffect(() => {
     getAllProducts();
-  }, []);
+  }, [location.state]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
