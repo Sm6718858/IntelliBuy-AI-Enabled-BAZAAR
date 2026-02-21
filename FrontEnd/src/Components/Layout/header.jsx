@@ -18,6 +18,34 @@ const Header = () => {
   const Category = useCategory();
   const navigate = useNavigate();
 
+  const handleCommand = (text) => {
+  text = text.toLowerCase();
+
+  if (text.includes("search")) {
+  const query = text.split("search")[1]?.trim();
+
+  if (query) {
+    navigate(`/search?q=${encodeURIComponent(query)}`);
+  }
+}
+
+  else if (text.includes("back")) {
+    navigate(-1);
+  }
+
+  else if (text.includes("open cart")) {
+    navigate("/cart");
+  }
+
+  else if (text.includes("open home")) {
+    navigate("/home");
+  }
+
+  else if (text.includes("login")) {
+    navigate("/login");
+  }
+};
+
   const handleLogout = () => {
     setAuth({ user: null, token: "" });
     localStorage.removeItem("auth");
@@ -27,12 +55,23 @@ const Header = () => {
   };
 
   const linkStyle = ({ isActive }) =>
-  `px-4 py-2 rounded-md font-medium text-sm transition-all duration-200
-   ${
-     isActive
-       ? "text-white bg-blue-700 md:bg-blue-600"
-       : "text-white hover:bg-blue-700 md:text-gray-700 md:hover:bg-blue-600 md:hover:text-white"
-   }`;
+    `px-4 py-2 rounded-md font-medium text-sm transition-all duration-200
+   ${isActive
+      ? "text-white bg-blue-700 md:bg-blue-600"
+      : "text-white hover:bg-blue-700 md:text-gray-700 md:hover:bg-blue-600 md:hover:text-white"
+    }`;
+
+  const startListening = () => {
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.start();
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      console.log("Voice:", transcript);
+      handleCommand(transcript);
+    };
+  };
 
 
   return (
@@ -75,6 +114,7 @@ const Header = () => {
         <div className="w-full md:w-80">
           <SearchInput />
         </div>
+        <button onClick={startListening}>🎤</button>
 
         <div
           className={`w-full md:w-auto flex-col md:flex md:flex-row gap-3 md:gap-5 items-center transition-all duration-300
@@ -102,7 +142,7 @@ const Header = () => {
             {categoryDropdownOpen && (
               <div className="absolute left-0 mt-3 w-52 bg-white rounded-2xl shadow-xl overflow-hidden z-50" style={{ textDecoration: "none" }}>
                 <Link
-                style={{ textDecoration: "none" }}
+                  style={{ textDecoration: "none" }}
                   to="/categories"
                   className="block px-4 py-3 text-sm hover:bg-gray-100"
                   onClick={() => setCategoryDropdownOpen(false)}
@@ -111,7 +151,7 @@ const Header = () => {
                 </Link>
                 {Category?.map((c) => (
                   <Link
-                  style={{ textDecoration: "none" }}
+                    style={{ textDecoration: "none" }}
                     key={c._id}
                     to={`/category/${c.slug}`}
                     className="block px-4 py-3 text-sm hover:bg-gray-100"
@@ -152,7 +192,7 @@ const Header = () => {
               {userDropdownOpen && (
                 <div className="absolute right-0 mt-3 w-48 bg-white rounded-2xl shadow-xl overflow-hidden z-50">
                   <NavLink
-                  style={{ textDecoration: "none" }}
+                    style={{ textDecoration: "none" }}
                     to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"
                       }`}
                     className="block px-4 py-3 hover:bg-gray-100"
